@@ -4,7 +4,7 @@ sys.path.append('./')
 from src.restful import controller_app
 
 if __name__ == "__main__":
-    controller_app.run(host="0.0.0.0", port=3000, workers=1, auto_reload=False, debug=True)
+    controller_app.run(host="0.0.0.0", port=3000, single_process=True, auto_reload=False, debug=True)
 
     # 
     # ```shell

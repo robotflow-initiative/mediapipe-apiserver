@@ -7,13 +7,16 @@ from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 import os
 
+
 class MediaPipeDetector:
-    def __init__(self) -> None:
+    def __init__(self, model_asset_path: str = None) -> None:
         # create detector
-        self.base_options = python_tasks.BaseOptions(model_asset_path='assets/pose_landmarker.task')
+        if model_asset_path is None or model_asset_path == "":
+            model_asset_path = "assets/pose_landmarker.task"
+        self.base_options = python_tasks.BaseOptions(model_asset_path=model_asset_path)
         self.options = vision.PoseLandmarkerOptions(
-            base_options=self.base_options,
-            output_segmentation_masks=True)
+            base_options=self.base_options, output_segmentation_masks=True
+        )
         self.detector = vision.PoseLandmarker.create_from_options(self.options)
 
     def get_landmarks(self, image: np.ndarray):
@@ -30,15 +33,20 @@ class MediaPipeDetector:
 
             # Draw the pose landmarks.
             pose_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
-            pose_landmarks_proto.landmark.extend([
-                landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in pose_landmarks
-            ])
+            pose_landmarks_proto.landmark.extend(
+                [
+                    landmark_pb2.NormalizedLandmark(
+                        x=landmark.x, y=landmark.y, z=landmark.z
+                    )
+                    for landmark in pose_landmarks
+                ]
+            )
             uvs.append([(landmark.x, landmark.y) for landmark in pose_landmarks])
             solutions.drawing_utils.draw_landmarks(
                 annotated_image,
                 pose_landmarks_proto,
                 solutions.pose.POSE_CONNECTIONS,
-                solutions.drawing_styles.get_default_pose_landmarks_style()
+                solutions.drawing_styles.get_default_pose_landmarks_style(),
             )
 
         return annotated_image, uvs
