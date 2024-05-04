@@ -1,0 +1,7 @@
+*.vscode
+dist
+build
+
+*.pyc
+*.tar.gz
+*.whl
