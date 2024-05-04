@@ -1,6 +1,6 @@
 import abc
 from typing import Optional, Any
-from common.option import CameraOption
+from src.common.option import CameraOption
 
 class vCamera(abc.ABC):
     def __init__(self, camera_id: str, option: CameraOption) -> None:

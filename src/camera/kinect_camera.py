@@ -1,4 +1,4 @@
-from common.option import CameraOption
+from src.common.option import CameraOption
 from typing import Any, Optional
 
 import cv2
@@ -12,6 +12,7 @@ _library_initialized = False
 class KinectCamera(vCamera):
     def __init__(self, camera_id: str, option: CameraOption) -> None:
         super().__init__(camera_id, option)
+        global _library_initialized
         if not _library_initialized:
             pykinect.initialize_libraries()
             _library_initialized = True
@@ -22,7 +23,7 @@ class KinectCamera(vCamera):
                 self._camera_index = int(camera_id)
             except ValueError:
                 raise Exception("camera_id(index) must be a integer")
-        assert self._camera_index > 0, "camera_id(index) must be a positive integer"
+        assert self._camera_index >= 0, "camera_id(index) must be a positive integer"
         
         self._device: pykinect.Device = None
         self._device_config: pykinect.Configuration = None
@@ -39,6 +40,7 @@ class KinectCamera(vCamera):
         self._device = pykinect.start_device(device_index=self._camera_index, config=_device_config)
         self._device_config = _device_config
         self.is_opened = True
+        self.is_started = True
         return None
 
     def start(self) -> Optional[Exception]:

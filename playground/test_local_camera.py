@@ -1,17 +1,16 @@
 import cv2
-import pykinect_azure as pykinect
-import numpy as np
 
+import sys
+sys.path.append('./')
 from src.camera import KinectCamera 
 from src.detector import MediaPipeDetector
 from src.common.option import CameraOption
-is_depth = False
 
 from loguru import logger
 
 def main():
     opt = CameraOption(use_depth=False)
-    cam = KinectCamera("0")
+    cam = KinectCamera("0", opt)
     detector = MediaPipeDetector()
 
     cam.open()
@@ -34,3 +33,7 @@ def main():
         print("Keyboard Interrupt Captured")
     finally:
         cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    logger.info("Press Q to exit")
+    main()

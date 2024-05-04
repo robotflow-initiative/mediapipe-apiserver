@@ -10,7 +10,7 @@ import os
 class MediaPipeDetector:
     def __init__(self) -> None:
         # create detector
-        self.base_options = python_tasks.BaseOptions(model_asset_path='pose_landmarker.task')
+        self.base_options = python_tasks.BaseOptions(model_asset_path='assets/pose_landmarker.task')
         self.options = vision.PoseLandmarkerOptions(
             base_options=self.base_options,
             output_segmentation_masks=True)
@@ -21,7 +21,7 @@ class MediaPipeDetector:
         detection_result = self.detector.detect(image)
 
         pose_landmarks_list = detection_result.pose_landmarks
-        annotated_image = image.numpy_view()
+        annotated_image = np.copy(image.numpy_view())
 
         uvs = []
         # Loop through the detected poses to visualize.
