@@ -9,3 +9,11 @@ playground.test_local_camera:
 .PHONY: playground.test_websocket_server
 playground.test_websocket_server:
 	python playground/test_websocket_server.py
+
+.PHONE: serve
+serve:
+	python -m src --port 3000
+
+.PHONE: debug_serve
+debug_serve:
+	python -m src --port 3000 --debug

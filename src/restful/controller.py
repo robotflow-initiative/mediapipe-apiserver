@@ -1,6 +1,4 @@
 from sanic import Sanic
-import sys
-sys.path.append('./')
 from src.restful.detector import bp as detector_bp
 
 app = Sanic("controller_root")
