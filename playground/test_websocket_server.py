@@ -1,7 +1,8 @@
-
+"""This scripts tests the availability of sanic server
+"""
 import sys
 sys.path.append('./')
-from src.restful import controller_app
+from mediapipe_apiserver.restful import controller_app
 
 if __name__ == "__main__":
     controller_app.run(host="0.0.0.0", port=3000, single_process=True, auto_reload=False, debug=True)

@@ -1,7 +1,10 @@
 from sanic import Sanic
-from src.restful.detector import bp as detector_bp
+from mediapipe_apiserver.restful.detector import bp as detector_bp
 
+# sanic controller must created as global variable
 app = Sanic("controller_root")
+
+# register a blueprint to controller
 app.blueprint(detector_bp)
 
 if __name__ == "__main__":

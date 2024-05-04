@@ -1,10 +1,15 @@
+"""This scripts tests the availability of local camera
+- open a kinect camera
+- run capture/detector in sync mode
+- display annotated images with opencv
+"""
 import cv2
 
 import sys
 sys.path.append('./')
-from src.camera import KinectCamera 
-from src.detector import MediaPipeDetector
-from src.common.option import CameraOption
+from mediapipe_apiserver.camera import KinectCamera 
+from mediapipe_apiserver.detector import MediaPipeDetector
+from mediapipe_apiserver.common.option import CameraOption
 
 from loguru import logger
 
