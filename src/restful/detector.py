@@ -1,8 +1,9 @@
 import asyncio
 from asyncio import Lock
 
-from sanic import Blueprint
+from sanic import Blueprint, Sanic
 from sanic.server.websockets.impl import WebsocketImplProtocol
+from websockets.connection import State
 
 from loguru import logger
 
@@ -14,7 +15,6 @@ _dummy_sender_lock = Lock()
 async def _dummy_sender(ws: WebsocketImplProtocol, camera, detector):
     # get root service
     global _dummy_sender_lock
-    await _dummy_sender_lock.acquire()
     while True:
         try:
             # send ping message
@@ -26,7 +26,7 @@ async def _dummy_sender(ws: WebsocketImplProtocol, camera, detector):
         except Exception as e:
             logger.error(f"connection closed: {e}")
             break
-    _dummy_sender_lock.release()
+
 
 
 @bp.websocket("/dummy", name="detector_dummy")
@@ -34,9 +34,18 @@ async def websocket_dummy_handler(request, ws: WebsocketImplProtocol):
     task_name = f"receiver:{request.id}"
     # start sender task
     camera, detector = request.app.ctx.camera,request.app.ctx.detector
-    request.app.add_task(_dummy_sender(ws, camera, detector), name=task_name)
+    _app: Sanic = request.app
+    _app.add_task(_dummy_sender(ws, camera, detector), name=task_name)
     try:
+        await _dummy_sender_lock.acquire()
         while True:
-            await asyncio.sleep(86400)
+            if ws.ws_proto.state in (State.CLOSED, State.CLOSING):
+                break
+            else:
+                await asyncio.sleep(1)
     finally:
-        request.app.purge_tasks()
+        ws.close()
+        ws.wait_for_connection_lost()
+        _dummy_sender_lock.release()
+        _app.cancel_task(task_name)
+        _app.purge_tasks()
