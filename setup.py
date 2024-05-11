@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name='mediapipe_apiserver',
     version='0.1.0',
-    url='https://github.com/<your-github-username>/mediapipe_apiserver',
+    url='https://github.com/robotflow-initiative/mediapipe_apiserver',
     author='davidliyutong',
     author_email='david.liyutong@outlook.com',
     description='MediaPipe API Server',
