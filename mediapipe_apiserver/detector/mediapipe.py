@@ -15,13 +15,20 @@ from mediapipe.framework.formats import landmark_pb2
 class MediaPipeDetector:
     def __init__(self, model_asset_path: str = None) -> None:
         # create detector
-        if model_asset_path is None or model_asset_path == "":
-            model_asset_path = "assets/pose_landmarker.task"
-        self.base_options = python_tasks.BaseOptions(model_asset_path=model_asset_path)
-        self.options = vision.PoseLandmarkerOptions(
-            base_options=self.base_options, output_segmentation_masks=True
-        )
-        self.detector = vision.PoseLandmarker.create_from_options(self.options)
+        try:
+            print("started creating detector")
+            if model_asset_path is None or model_asset_path == "":
+                model_asset_path = "assets/pose_landmarker.task"
+            self.base_options = python_tasks.BaseOptions(model_asset_path=model_asset_path)
+            print("base options set")
+            self.options = vision.PoseLandmarkerOptions(
+                base_options=self.base_options, output_segmentation_masks=True
+            )
+            self.detector = vision.PoseLandmarker.create_from_options(self.options)
+            print("successfully initialized")
+        except Exception as e:
+            print(f"Error initializing MediaPipeDetector: {e}")
+            raise
 
     def get_landmarks(self, image: np.ndarray, require_annotation=True) -> Tuple[Optional[np.ndarray], List[List[Tuple[float, float]]]]:
         # convert image format
@@ -64,5 +71,5 @@ class MediaPipeDetector:
                     solutions.pose.POSE_CONNECTIONS,
                     solutions.drawing_styles.get_default_pose_landmarks_style(),
                 )
-
+        #image and coordinates
         return annotated_image, uvs

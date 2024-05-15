@@ -4,11 +4,11 @@ from typing import Any, Optional
 import cv2
 import numpy as np
 import pykinect_azure as pykinect
-
+import time
 from .camera_interface import vCamera
 
 _library_initialized = False
-
+#对相机进行操作
 
 class KinectCamera(vCamera):
     def __init__(self, camera_id: str, option: CameraOption) -> None:
@@ -31,7 +31,7 @@ class KinectCamera(vCamera):
 
         self._device: pykinect.Device = None
         self._device_config: pykinect.Configuration = None
-
+        self.timestamp = None
     def open(self) -> Optional[Exception]:
         _device_config = pykinect.default_configuration
         if self.option.use_depth:
@@ -48,7 +48,7 @@ class KinectCamera(vCamera):
         self._device_config = _device_config
         self.is_opened = True
         self.is_started = True  # first open will automatically start the camera
-        return None
+        
 
     def start(self) -> Optional[Exception]:
         # avoid duplicate start
@@ -61,10 +61,12 @@ class KinectCamera(vCamera):
         self.is_started = True
 
     def read(self) -> Any:
+        # record time stamp
+        
         # avoid reading from stopped camera
         if not self.is_started:
             return Exception("not started")
-
+        self.timestamp = time.time() 
         # get capture
         capture = self._device.update()
 

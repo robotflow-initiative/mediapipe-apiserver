@@ -14,7 +14,6 @@ _dummy_sender_lock = Lock()
 
 async def _dummy_sender(ws: WebsocketImplProtocol, camera, detector):
     # get root service
-    global _dummy_sender_lock
     while True:
         try:
             # send ping message
@@ -35,9 +34,9 @@ async def websocket_dummy_handler(request, ws: WebsocketImplProtocol):
     # start sender task
     camera, detector = request.app.ctx.camera,request.app.ctx.detector
     _app: Sanic = request.app
-    _app.add_task(_dummy_sender(ws, camera, detector), name=task_name)
     try:
         await _dummy_sender_lock.acquire()
+        _app.add_task(_dummy_sender(ws, camera, detector), name=task_name)
         while True:
             if ws.ws_proto.state in (State.CLOSED, State.CLOSING):
                 break
@@ -46,6 +45,6 @@ async def websocket_dummy_handler(request, ws: WebsocketImplProtocol):
     finally:
         ws.close()
         ws.wait_for_connection_lost()
-        _dummy_sender_lock.release()
         _app.cancel_task(task_name)
+        _dummy_sender_lock.release()
         _app.purge_tasks()

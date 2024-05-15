@@ -4,7 +4,10 @@
 
 - [ ] update requirements
 - [ ] raw image api, annotated image API
+1、发送坐标同时发送raw image图片,time stamp,capture的时间
+.jpeg 图片
 - [ ] client library
+写一个类，connect read uvs
 - [ ] add `__enter__` to camera class that supports `with` context
 
 ## Develope Guide

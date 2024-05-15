@@ -16,8 +16,8 @@ playground.test_ws_client:
 
 .PHONE: serve
 serve:
-	python -m src --port 3000
+	python -m mediapipe_apiserver --port 3000
 
 .PHONE: debug_serve
 debug_serve:
-	python -m src --port 3000 --debug
+	python -m mediapipe_apiserver --port 3000 --debug=true
