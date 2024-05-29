@@ -20,6 +20,7 @@ def main():
 
     cam.open()
     cam.start()
+    print(cam.get_intrinsics())
 
     cv2.namedWindow('Annoed Depth Image',cv2.WINDOW_NORMAL)
     try:
@@ -29,7 +30,9 @@ def main():
             if err is not None:
                 logger.error(err)
                 break
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             annoed, uvs = detector.get_landmarks(image)
+            annoed = cv2.cvtColor(annoed, cv2.COLOR_RGB2BGR)
             cv2.imshow('Annoed Depth Image', annoed)
             # Press q key to stop
             if cv2.waitKey(1) == ord('q'):  

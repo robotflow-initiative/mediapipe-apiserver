@@ -1,4 +1,5 @@
 from mediapipe_apiserver.common.option import CameraOption
+from mediapipe_apiserver.common.datamodels import IntrinsicsMatrix
 from typing import Any, Optional
 
 import cv2
@@ -6,6 +7,7 @@ import numpy as np
 import pykinect_azure as pykinect
 
 from .camera_interface import vCamera
+
 
 _library_initialized = False
 
@@ -97,3 +99,11 @@ class KinectCamera(vCamera):
         # reset properties
         self._device = None
         self._device_config = None
+
+    @property
+    def device(self):
+        return self._device
+
+    def get_intrinsics(self):
+        calibration = self.device.get_calibration(self._device_config.depth_mode, self._device_config.color_resolution)
+        return IntrinsicsMatrix(color=calibration.get_matrix(pykinect.K4A_CALIBRATION_TYPE_COLOR), depth=calibration.get_matrix(pykinect.K4A_CALIBRATION_TYPE_DEPTH))

@@ -1,5 +1,24 @@
 # MediaPipe API Server
 
+## Get Started
+
+```shell
+pip install -r requirements
+```
+
+Start server
+
+```shell
+python -m mediapipe_apiserver serve
+```
+
+Start Client
+
+```shell
+wscat -c 127.0.0.1:3000/v1/dummy
+python ./playground/test_ws_client.py
+```
+
 ## TODO
 
 - [ ] update requirements

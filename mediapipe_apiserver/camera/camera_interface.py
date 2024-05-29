@@ -1,7 +1,7 @@
 import abc
 from typing import Optional, Any
 from mediapipe_apiserver.common.option import CameraOption
-
+from mediapipe_apiserver.common.datamodels import IntrinsicsMatrix
 
 class vCamera(abc.ABC):
     """This is abstract camera interface"""
@@ -36,4 +36,14 @@ class vCamera(abc.ABC):
     @abc.abstractmethod
     def close(self) -> Optional[Exception]:
         """close a stopped camera"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def device(self) -> Optional[Any]:
+        """return the raw device"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_intrinsics(self) -> Optional[IntrinsicsMatrix]:
+        """return the intrinsics"""
         raise NotImplementedError
