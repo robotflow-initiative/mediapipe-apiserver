@@ -16,10 +16,11 @@ class MediaPipeDetector:
     def __init__(self, model_asset_path: str = None) -> None:
         # create detector
         if model_asset_path is None or model_asset_path == "":
-            model_asset_path = "assets/pose_landmarker.task"
+            model_asset_path = "assets/pose_landmarker_lite.task"
         self.base_options = python_tasks.BaseOptions(model_asset_path=model_asset_path)
         self.options = vision.PoseLandmarkerOptions(
-            base_options=self.base_options, output_segmentation_masks=True
+            base_options=self.base_options, output_segmentation_masks=False,
+            # running_mode=mediapipe.tasks.vision.RunningMode.VIDEO,
         )
         self.detector = vision.PoseLandmarker.create_from_options(self.options)
 
@@ -54,7 +55,7 @@ class MediaPipeDetector:
                 ]
             )
             # add to results
-            uvs.append([(landmark.x, landmark.y) for landmark in pose_landmarks])
+            uvs.append([(landmark.x, landmark.y, landmark.z) for landmark in pose_landmarks])
             
             # if require annotation
             if annotated_image is not None:
