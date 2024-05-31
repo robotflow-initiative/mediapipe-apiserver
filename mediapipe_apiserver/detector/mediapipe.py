@@ -49,13 +49,15 @@ class MediaPipeDetector:
             pose_landmarks_proto.landmark.extend(
                 [
                     landmark_pb2.NormalizedLandmark(
-                        x=landmark.x, y=landmark.y, z=landmark.z
+                        x=landmark.x,
+                        y=landmark.y,
+                        z=landmark.visibility,
                     )
                     for landmark in pose_landmarks
                 ]
             )
             # add to results
-            uvs.append([(landmark.x, landmark.y, landmark.z) for landmark in pose_landmarks])
+            uvs.append([(landmark.x, landmark.y, landmark.visibility) for landmark in pose_landmarks])
             
             # if require annotation
             if annotated_image is not None:
