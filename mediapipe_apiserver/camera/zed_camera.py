@@ -52,7 +52,7 @@ class ZED2Camera(vCamera):
     
     def close(self) -> Optional[Exception]:
         # avoid close a closed camera or started camera
-        if self.is_closed:
+        if not self.is_opened:
             return Exception("already closed")
         if self.is_started:
             return Exception("not stopped")

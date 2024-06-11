@@ -1,3 +1,4 @@
+from .camera_interface import AsyncCamera
 try:
     from .kinect_camera import KinectCamera
 except:

@@ -7,6 +7,7 @@ import cv2
 
 import sys
 sys.path.append('./')
+from mediapipe_apiserver.camera import AsyncCamera
 # from mediapipe_apiserver.camera import KinectCamera 
 from mediapipe_apiserver.camera import ZED2Camera
 from mediapipe_apiserver.detector import MediaPipeDetector
@@ -17,7 +18,8 @@ from tqdm import tqdm
 
 def main():
     opt = CameraOption(use_depth=False)
-    cam = ZED2Camera("0", opt)
+    base_cam = ZED2Camera("0", opt)
+    cam = AsyncCamera(base_cam)
     detector = MediaPipeDetector()
 
     cam.open()
@@ -45,6 +47,8 @@ def main():
                 pbar.update()
     except KeyboardInterrupt:
         print("Keyboard Interrupt Captured")
+        cam.stop()
+        cam.close()
     finally:
         cv2.destroyAllWindows()
 

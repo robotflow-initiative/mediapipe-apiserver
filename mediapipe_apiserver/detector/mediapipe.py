@@ -1,8 +1,9 @@
 # This file uses MediaPipe, licensed under the Apache License, Version 2.0.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
+import time
 from typing import Optional, List, Tuple
- 
+
 import numpy as np
 
 import mediapipe
@@ -20,7 +21,7 @@ class MediaPipeDetector:
         self.base_options = python_tasks.BaseOptions(model_asset_path=model_asset_path)
         self.options = vision.PoseLandmarkerOptions(
             base_options=self.base_options, output_segmentation_masks=False,
-            # running_mode=mediapipe.tasks.vision.RunningMode.VIDEO,
+            running_mode=mediapipe.tasks.vision.RunningMode.VIDEO,
         )
         self.detector = vision.PoseLandmarker.create_from_options(self.options)
 
@@ -29,7 +30,8 @@ class MediaPipeDetector:
         image = mediapipe.Image(image_format=mediapipe.ImageFormat.SRGB, data=image)
 
         # run detection
-        detection_result = self.detector.detect(image)
+        # detection_result = self.detector.detect(image)
+        detection_result = self.detector.detect_for_video(image, int(time.time()*1000))
 
         pose_landmarks_list = detection_result.pose_landmarks
 
