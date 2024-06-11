@@ -1,1 +1,7 @@
-#TODO: Fix this requirements
+pykinect_azure
+click
+pydantic
+mediapipe
+loguru
+openapi
+sanic[ext]
