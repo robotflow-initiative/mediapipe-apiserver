@@ -7,36 +7,42 @@ import cv2
 
 import sys
 sys.path.append('./')
-from mediapipe_apiserver.camera import KinectCamera 
+# from mediapipe_apiserver.camera import KinectCamera 
+from mediapipe_apiserver.camera import ZED2Camera
 from mediapipe_apiserver.detector import MediaPipeDetector
 from mediapipe_apiserver.common.option import CameraOption
 
 from loguru import logger
+from tqdm import tqdm
 
 def main():
     opt = CameraOption(use_depth=False)
-    cam = KinectCamera("0", opt)
+    cam = ZED2Camera("0", opt)
     detector = MediaPipeDetector()
 
     cam.open()
     cam.start()
-    print(cam.get_intrinsics())
+    # print(cam.get_intrinsics())
 
-    cv2.namedWindow('Annoed Depth Image',cv2.WINDOW_NORMAL)
+    cv2.namedWindow('RAW Image', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('Annoed Image', cv2.WINDOW_NORMAL)
     try:
-        while True:
-            # Get capture
-            image, err = cam.read()
-            if err is not None:
-                logger.error(err)
-                break
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            annoed, uvs = detector.get_landmarks(image)
-            annoed = cv2.cvtColor(annoed, cv2.COLOR_RGB2BGR)
-            cv2.imshow('Annoed Depth Image', annoed)
-            # Press q key to stop
-            if cv2.waitKey(1) == ord('q'):  
-                break
+        with tqdm() as pbar:
+            while True:
+                # Get capture
+                image, err = cam.read()
+                if err is not None:
+                    logger.error(err)
+                    break
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                cv2.imshow('RAW Image', image)
+                # annoed, uvs = detector.get_landmarks(image)
+                # annoed = cv2.cvtColor(annoed, cv2.COLOR_RGB2BGR)
+                # cv2.imshow('Annoed Image', annoed)
+                # Press q key to stop
+                if cv2.waitKey(1) == ord('q'):  
+                    break
+                pbar.update()
     except KeyboardInterrupt:
         print("Keyboard Interrupt Captured")
     finally:
