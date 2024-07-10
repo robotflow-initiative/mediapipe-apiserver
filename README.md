@@ -21,7 +21,7 @@ python ./playground/test_ws_client.py
 
 ## TODO
 
-- [ ] update requirements
+- [√] update requirements
 - [ ] raw image api, annotated image API
 - [ ] client library
 - [ ] add `__enter__` to camera class that supports `with` context
