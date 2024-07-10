@@ -3,7 +3,7 @@
 ## Get Started
 
 ```shell
-pip install -r requirements
+pip install -r requirements -f https://mirror.sjtu.edu.cn/pytorch-wheels/torch_stable.html
 ```
 
 Start server
