@@ -29,4 +29,5 @@ torchvision==0.14.1+cu116 # -f https://mirror.sjtu.edu.cn/pytorch-wheels/torch_s
 openmim
 mmengine
 mmcv==2.1.0
+mmpose==1.3.1
 mmdet>=3.1.0
