@@ -10,7 +10,7 @@ sys.path.append('./')
 from mediapipe_apiserver.camera import AsyncCamera
 # from mediapipe_apiserver.camera import KinectCamera 
 from mediapipe_apiserver.camera import ZED2Camera
-from mediapipe_apiserver.detector import MediaPipeDetector
+from mediapipe_apiserver.detector import MediaPipeDetector,MMPoseDetector
 from mediapipe_apiserver.common.option import CameraOption
 
 from loguru import logger
@@ -20,7 +20,8 @@ def main():
     opt = CameraOption(use_depth=False)
     base_cam = ZED2Camera("0", opt)
     cam = AsyncCamera(base_cam)
-    detector = MediaPipeDetector()
+    # detector = MediaPipeDetector()
+    detector = MMPoseDetector()
 
     cam.open()
     cam.start()

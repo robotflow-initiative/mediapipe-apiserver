@@ -8,7 +8,7 @@ chumpy
 json_tricks
 matplotlib
 munkres
-numpy
+numpy==1.24.1
 opencv-python
 pillow
 scipy
