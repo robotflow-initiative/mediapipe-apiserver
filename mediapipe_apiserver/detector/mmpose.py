@@ -41,8 +41,10 @@ class MyPoseInferencer(Pose2DInferencer):
         # Choose one of the options (here we choose by bbox score)
         if mode == 'bbox_score':
             selected_idx = max_score_idx
-        else:
+        elif mode == 'bbox_area':
             selected_idx = max_area_idx
+        else:
+            raise ValueError(f"Invalid mode: {mode}")
         # print(f"Selected instance: {selected_idx}")
         selected_instance = InstanceData(
             scores=pred_instances.scores[selected_idx:selected_idx+1],
