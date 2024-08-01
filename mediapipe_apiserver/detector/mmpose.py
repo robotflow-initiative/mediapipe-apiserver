@@ -1,8 +1,8 @@
 import time
 from typing import Optional, List, Tuple
-
+import os
 import numpy as np
-
+import mmpose
 import mmcv
 import torch
 from mmengine.config import Config, ConfigDict
@@ -107,7 +107,15 @@ class MMPoseDetector:
     def __init__(self, model_asset_path: str = None, model_config_path: str = None) -> None:
         if model_asset_path is None or model_asset_path == "":
             model_asset_path = r"ckpt\rtmo-t_8xb32-600e_body7-416x416-f48f75cb_20231219.pth"
-            model_config_path = r"configs\body_2d_keypoint\rtmo\body7\rtmo-t_8xb32-600e_body7-416x416.py"      
+            mmpose_path =  mmpose.__path__[0]
+            
+           
+            # model_config_path = r"configs\body_2d_keypoint\rtmo\body7\rtmo-t_8xb32-600e_body7-416x416.py"
+            relative_path = os.path.join('.mim', 'configs', 'body_2d_keypoint', 'rtmo', 'body7', 'rtmo-t_8xb32-600e_body7-416x416.py')
+            print(relative_path)
+            model_config_path = os.path.join(mmpose_path, relative_path)
+            
+                  
         self.inferencer = MyPoseInferencer(
             model=model_config_path,
             weights=model_asset_path

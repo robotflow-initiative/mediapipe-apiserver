@@ -6,6 +6,8 @@
 pip install -r requirements -f https://mirror.sjtu.edu.cn/pytorch-wheels/torch_stable.html
 ```
 
+Acquire ckpt for mmpose via https://github.com/open-mmlab/mmpose/tree/main/projects/rtmo and put it in `./ckpt`. After that, select the corresponding configuration file, the default configuration is for "rtmo-t_8xb32-600e_body7-416x416-f48f75cb_20231219.pth"
+
 Start server
 
 ```shell

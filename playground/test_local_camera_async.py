@@ -34,6 +34,7 @@ def main():
             while True:
                 # Get capture
                 image, err = cam.read()
+                # print(image.shape)
                 if err is not None:
                     logger.error(err)
                     break
