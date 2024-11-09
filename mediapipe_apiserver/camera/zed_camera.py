@@ -38,7 +38,7 @@ class ZED2Camera(vCamera):
 
         # get capture
         ret, frame = self.cam.read()
-
+        
         # select the left half
         frame = frame[:, :1280]
 
